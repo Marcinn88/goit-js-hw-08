@@ -9,7 +9,6 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const gallery = document.querySelector('.gallery');
 
-//Creating and rendering tags for gallery items
 const galleryItem = galleryItems
   .map(
     item => `
@@ -20,7 +19,7 @@ const galleryItem = galleryItems
   .join('');
 gallery.insertAdjacentHTML('beforeend', galleryItem);
 
-//Initialization of library SimpleLightBox
+//SimpleLightBox
 const lightbox = new SimpleLightbox('.gallery a', {
   caption: true,
   captionsData: 'alt',
