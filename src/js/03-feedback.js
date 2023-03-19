@@ -8,31 +8,39 @@ const savedData = {};
 
 afterReload();
 
-form.addEventListener('input', throttle(handleInput, 500));
-form.addEventListener('submit', handleSubmit);
+form.addEventListener('input', throttle(catchInput, 500));
+form.addEventListener('submit', catchSubmit);
 
-function handleInput(event) {
+function catchInput(event) {
   savedData[event.target.name] = event.target.value;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(savedData));
 }
 
-function handleSubmit(event) {
+function catchSubmit(event) {
   event.preventDefault();
-  const praseData = JSON.parse(localStorage.getItem(STORAGE_KEY));
-  if (praseData) {
-    console.log(praseData);
+  try {
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (data) {
+      console.log(data);
+    }
+    event.currentTarget.reset();
+    localStorage.removeItem(STORAGE_KEY);
+  } catch (error) {
+    console.log(`Error w funkcji catchSubmit`);
   }
-  event.currentTarget.reset();
-  localStorage.removeItem(STORAGE_KEY);
 }
 
 function afterReload() {
-  const praseData = JSON.parse(localStorage.getItem(STORAGE_KEY));
-  if (praseData) {
-    email.value = praseData.email;
-    message.value = praseData.message;
-  } else {
-    email.value = '';
-    message.value = '';
+  try {
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (data) {
+      email.value = data.email;
+      message.value = data.message;
+    } else {
+      email.value = '';
+      message.value = '';
+    }
+  } catch (error) {
+    console.log(`Error w funkcji afterReload`);
   }
 }
